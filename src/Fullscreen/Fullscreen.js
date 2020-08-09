@@ -1,6 +1,6 @@
 // taken from https://github.com/vadimdemedes/ink/issues/263
 
-const { useEffect } = require('react');
+const { useEffect, useMemo } = require('react');
 
 const enterAltScreenCommand = '\x1b[?1049h';
 const leaveAltScreenCommand = '\x1b[?1049l';
@@ -15,7 +15,7 @@ const FullScreen = ({ children }) => {
     return exitFullScreen;
   }, []);
 
-  process.stdout.write(enterAltScreenCommand);
+  useMemo(() => process.stdout.write(enterAltScreenCommand), []);
 
   // trigger alternate screen
   return children;

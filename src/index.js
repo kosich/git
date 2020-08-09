@@ -11,6 +11,10 @@ const { Main } = importJsx('./Main');
 
 const git = simpleGit();
 
+function getLog() {
+  return git.log(['--remotes']);
+}
+
 const App = ({ }) => {
   const [log, setLog] = useState(void 0);
 
@@ -25,10 +29,13 @@ const App = ({ }) => {
   })
 
   useEffect(() => {
-    git.log().then(
-      data => { setLog(data.all) },
-      err => { throw err; }
-     );
+    getLog()
+      .then(d => { setLog(d.all) })
+      .then(() => git.fetch())
+      .then(getLog)
+      .then(
+        data => { setLog(data.all) }
+      );
   }, [])
 
   return <FullScreen>{

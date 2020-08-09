@@ -12,8 +12,6 @@ const App = ({ }) => {
   const [log, setLog] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  console.log(log);
-
   const { exit } = useApp();
 
   useInput((input, key) => {
@@ -33,7 +31,7 @@ const App = ({ }) => {
 
   useEffect(() => {
     git.log().then(
-      data => { setLog(data.all); console.log(data.all) },
+      data => { setLog(data.all) },
       err => { throw err; }
      );
   }, [])
@@ -41,8 +39,8 @@ const App = ({ }) => {
   // * 3a793ec - (HEAD -> master) initial (68 minutes ago) <Kostiantyn Palchyk>
 
   return <FullScreen>
-    <Box flexDirection={"column"} height={40}>
-    <Box flexGrow={1}>
+    <Box flexDirection={"column"} height={50}>
+    <Box flexGrow={1} flexDirection={"column"}>
       {
         log.map((entry, index) =>
           <Box key={entry.hash}>

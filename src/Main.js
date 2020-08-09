@@ -1,12 +1,16 @@
 // * 3a793ec - (HEAD -> master) initial (68 minutes ago) <Kostiantyn Palchyk>
 const React = require('react');
-const { Text, useInput, Box, Spacer } = require('ink');
-const { useState } = require('react');
+const { Text, useInput, Box, Spacer, measureElement } = require('ink');
+const { useState, useRef, useEffect, useMemo } = require('react');
 const { DateTime } = require('luxon');
+const { default: Spinner } = require('ink-spinner');
 
 function Main({ log }) {
+  const sizes = { width: '100%', height: 40 };
 
   const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const cwd = useMemo(() => process.cwd(), []);
 
   useInput((_, key) => {
     if (key.upArrow) {
@@ -18,8 +22,8 @@ function Main({ log }) {
     }
   });
 
-  return <Box flexDirection={"column"} height={40}>
-    <Box flexGrow={1} flexDirection={"column"}>
+  return <Box flexDirection={"column"} height={sizes.height} width={sizes.width}>
+    <Box flexGrow={1} flexDirection={"column"} padding={1}>
       {
         log.map((entry, index) =>
           <Box key={entry.hash} >
@@ -40,7 +44,19 @@ function Main({ log }) {
       }
     </Box>
     <Spacer />
-    <Box><Text width="100%" inverse>git log</Text></Box>
+    <Box
+      borderStyle="single"
+      borderColor="grey"
+      justifyContent="space-between"
+      paddingLeft={1}
+      paddingRight={1}
+    >
+      <Text dimColor>Git Log</Text>
+      <Box>
+        <Text color="green">{ cwd }</Text>
+      </Box>
+      <Text>q=quit</Text>
+    </Box>
   </Box>
 }
 

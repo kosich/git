@@ -1,8 +1,7 @@
-'use strict';
-
+// @ts-check
 const React = require('react');
 const { Text, useInput, Box, useApp, Spacer } = require('ink');
-const simpleGit = require('simple-git');
+const { default: simpleGit } = require('simple-git');
 const { useState, useEffect } = require('react');
 const { exitFullScreen, FullScreen } = require('./Fullscreen/Fullscreen');
 const { default: Spinner } = require('ink-spinner');
@@ -11,11 +10,8 @@ const { Main } = importJsx('./Main');
 
 const git = simpleGit();
 
-function getLog() {
-  return git.log(['--remotes']);
-}
-
 const App = ({ }) => {
+  const [status, setStatus] = useState(void 0);
   const [log, setLog] = useState(void 0);
 
   const { exit } = useApp();
@@ -29,21 +25,24 @@ const App = ({ }) => {
   })
 
   useEffect(() => {
-    getLog()
-      .then(d => { setLog(d.all) })
-      .then(() => git.fetch())
-      .then(getLog)
-      .then(
-        data => { setLog(data.all) }
-      );
+    git.status().then(status => {
+      const branches = [status.current];
+
+      if (status.tracking) {
+        branches.push(status.tracking);
+      }
+
+      git.log([ ...branches, '--stat' ]).then(d => { setLog(d.all) })
+
+      setStatus(status);
+    })
   }, [])
 
   return <FullScreen>{
-      !log
-      ? <Text color="green"><Spinner /></Text>
-      : <Main log={ log }/>
-    }
-  </FullScreen>
+    !log
+    ? <Text color="green"><Spinner /></Text>
+    : <Main log={log} status={status} />
+  }</FullScreen>
 };
 
 module.exports = App;

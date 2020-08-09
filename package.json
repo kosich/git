@@ -16,6 +16,7 @@
 	"dependencies": {
 		"import-jsx": "^4.0.0",
 		"ink": "^3.0.3",
+		"ink-spinner": "^4.0.0",
 		"luxon": "^1.24.1",
 		"meow": "^7.0.1",
 		"react": "^16.13.1",

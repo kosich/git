@@ -5,6 +5,7 @@ const { Text, useInput, Box, useApp, Spacer } = require('ink');
 const simpleGit = require('simple-git');
 const { useState, useEffect } = require('react');
 const { exitFullScreen, FullScreen } = require('./Fullscreen/Fullscreen');
+const { DateTime } = require('luxon');
 
 const git = simpleGit();
 
@@ -39,18 +40,18 @@ const App = ({ }) => {
   // * 3a793ec - (HEAD -> master) initial (68 minutes ago) <Kostiantyn Palchyk>
 
   return <FullScreen>
-    <Box flexDirection={"column"} height={50}>
+    <Box flexDirection={"column"} height={40}>
     <Box flexGrow={1} flexDirection={"column"}>
       {
         log.map((entry, index) =>
-          <Box key={entry.hash}>
+          <Box key={entry.hash} >
             <Text dimColor={ index !== selectedIndex }>
               {'* '}
               <Text color="red">{ entry.hash.substring(0, 7) }</Text>
               {' '}
               <Text color="yellow">{ entry.refs }</Text>
               {' '}
-              <Text color="green">({ entry.date })</Text>
+              <Text color="green">({ DateTime.fromISO(entry.date).toRelative() })</Text>
               {' '}
               <Text>{ entry.message }</Text>
               {' '}
@@ -61,7 +62,7 @@ const App = ({ }) => {
       }
     </Box>
     <Spacer />
-    <Box><Text inverse>git log</Text></Box>
+    <Box><Text width="100%" inverse>git log</Text></Box>
     </Box>
   </FullScreen>
 };

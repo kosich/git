@@ -2,9 +2,12 @@ const React = require('react');
 const { Text, useInput, Box, Spacer } = require('ink');
 const { useState, useMemo } = require('react');
 const { DateTime } = require('luxon');
+const importJsx = require('import-jsx');
+const { Sidebar } = importJsx('./Sidebar');
+const { Status } = importJsx('./Status');
 
 function Main({ log, status }) {
-  const sizes = { width: '100%', height: 40 };
+  const sizes = { width: '100%', height: 56 };
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -26,15 +29,11 @@ function Main({ log, status }) {
     <Box flexGrow={1}>
       <Box flexGrow={1} flexDirection={"column"} padding={1}>
 
-        <Box marginBottom={1} flexDirection={"column"}>{
+        {
           status.isClean()
           ? null
-          : status.files.map(file =>
-            <Box key={file.path}>
-              <Text color="redBright">{file.path}</Text>
-            </Box>
-          )
-        }</Box>
+          : <Status status={status} />
+        }
 
         {
           log.map((entry, index) =>
@@ -58,7 +57,7 @@ function Main({ log, status }) {
         }
       </Box>
       <Box width="25%" minWidth={20}>
-        <Text>{ log && JSON.stringify(log[selectedIndex].diff, null, '  ') }</Text>
+        <Sidebar commit={log && log[selectedIndex]} />
       </Box>
     </Box>
     <Spacer />

@@ -1,6 +1,6 @@
 //@ts-check
 const React = require('react');
-const { Text, useInput, Box, Spacer } = require('ink');
+const { Text, useInput, Box, Spacer, Newline } = require('ink');
 
 function Sidebar({ commit }) {
   if (!commit || !commit.diff || !commit.diff.files) {
@@ -10,9 +10,15 @@ function Sidebar({ commit }) {
   const files = commit.diff.files;
 
   return <Box flexDirection="column" padding={1}>
-    <Box>
-      <Text>{ commit.hash }</Text>
-    </Box>
+    <Text color="gray">{ commit.hash }</Text>
+
+    <Newline />
+
+    <Text>{ commit.message }</Text>
+
+    <Newline />
+
+    <Text>{ commit.body }</Text>
 
     <Box padding={1} flexDirection="column">
     {

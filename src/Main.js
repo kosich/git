@@ -6,6 +6,7 @@ const { DateTime } = require('luxon');
 const importJsx = require('import-jsx');
 const { Sidebar } = importJsx('./Sidebar');
 const { Status } = importJsx('./Status');
+const { Heatmap } = importJsx('./Heatmap/Heatmap');
 
 function Main({ log, status }) {
   const [{ rows, columns }, setSizes] = useState(readStdoutSizes());
@@ -20,19 +21,21 @@ function Main({ log, status }) {
 
   const cwd = useMemo(() => process.cwd(), []);
 
+  const commits = useMemo(() => log.slice(0, Math.max(0, rows - 5)), [log, rows]);
+
   useInput((_, key) => {
     if (key.upArrow) {
       setSelectedIndex(x => Math.max(x - 1, 0))
     }
 
     else if (key.downArrow){
-      setSelectedIndex(x => Math.min(x + 1, log.length - 1))
+      setSelectedIndex(x => Math.min(x + 1, commits.length - 1))
     }
   });
 
   // * 3a793ec - (HEAD -> master) initial (68 minutes ago) <Kostiantyn Palchyk>
 
-  return <Box flexDirection={"column"} height={rows} width={columns}>
+  return <Box flexDirection={"column"} height={rows || '100%'} width={columns || '100%'}>
     <Box flexGrow={1}>
       <Box flexGrow={1} flexDirection={"column"} padding={1}>
 
@@ -43,7 +46,7 @@ function Main({ log, status }) {
         }
 
         {
-          log.map((entry, index) =>
+          commits.map((entry, index) =>
             <Box key={entry.hash} >
               <Text dimColor={index !== selectedIndex}>
                 {'* '}
@@ -63,7 +66,9 @@ function Main({ log, status }) {
           )
         }
       </Box>
-      <Box width="25%" minWidth={20}>
+      <Box width="25%" minWidth={36} flexDirection="column">
+        <Heatmap commits={log} />
+
         <Sidebar commit={log && log[selectedIndex]} />
       </Box>
     </Box>
@@ -86,8 +91,8 @@ function Main({ log, status }) {
 
 function readStdoutSizes() {
   return {
-    columns: process.stdout.columns || '100%',
-    rows: process.stdout.rows || '100%'
+    columns: process.stdout.columns || 0,
+    rows: process.stdout.rows || 0
   }
 }
 

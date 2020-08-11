@@ -1,6 +1,7 @@
 //@ts-check
 const React = require('react');
-const { Text, useInput, Box, Spacer, Newline } = require('ink');
+const { Text, Box, Newline } = require('ink');
+const { DateTime } = require('luxon');
 
 function Sidebar({ commit }) {
   if (!commit || !commit.diff || !commit.diff.files) {
@@ -10,17 +11,24 @@ function Sidebar({ commit }) {
   const files = commit.diff.files;
 
   return <Box flexDirection="column" padding={1}>
-    <Text color="gray">{ commit.hash }</Text>
+    <Box>
+      <Text color="gray" dimColor>{commit.hash}</Text>
+    </Box>
 
-    <Newline />
+    <Box>
+      <Text color="green" dimColor>{DateTime.fromISO(commit.date).toRFC2822()}</Text>
+    </Box>
 
-    <Text>{ commit.message }</Text>
+    <Box>
+      <Text>{commit.message}</Text>
+    </Box>
 
-    <Newline />
+    {commit.body
+      ? <Box paddingTop={1}><Text>{commit.body}</Text></Box>
+    : null
+    }
 
-    <Text>{ commit.body }</Text>
-
-    <Box padding={1} flexDirection="column">
+    <Box paddingTop={1} paddingBottom={1} flexDirection="column">
     {
       files.map(file => {
         return <Box key={file.file}>

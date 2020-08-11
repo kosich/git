@@ -28,6 +28,7 @@ const App = ({ }) => {
     git.status().then(status => {
       const branches = [status.current];
 
+      // Q: can there be several tracking branches?
       if (status.tracking) {
         branches.push(status.tracking);
       }

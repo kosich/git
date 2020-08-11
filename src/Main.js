@@ -7,13 +7,6 @@ const importJsx = require('import-jsx');
 const { Sidebar } = importJsx('./Sidebar');
 const { Status } = importJsx('./Status');
 
-function readStdoutSizes() {
-  return {
-    columns: process.stdout.columns || '100%',
-    rows: process.stdout.rows || '100%'
-  }
-}
-
 function Main({ log, status }) {
   const [{ rows, columns }, setSizes] = useState(readStdoutSizes());
 
@@ -89,6 +82,13 @@ function Main({ log, status }) {
       <Text>q=quit</Text>
     </Box>
   </Box>
+}
+
+function readStdoutSizes() {
+  return {
+    columns: process.stdout.columns || '100%',
+    rows: process.stdout.rows || '100%'
+  }
 }
 
 module.exports = { Main };

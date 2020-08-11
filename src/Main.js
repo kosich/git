@@ -1,3 +1,4 @@
+// @ts-check
 const React = require('react');
 const { Text, useInput, Box, Spacer } = require('ink');
 const { useState, useMemo } = require('react');
@@ -7,7 +8,8 @@ const { Sidebar } = importJsx('./Sidebar');
 const { Status } = importJsx('./Status');
 
 function Main({ log, status }) {
-  const sizes = { width: '100%', height: 56 };
+  const width = process.stdout.columns || '100%'
+  const height = process.stdout.rows || '100%';
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -25,7 +27,7 @@ function Main({ log, status }) {
 
   // * 3a793ec - (HEAD -> master) initial (68 minutes ago) <Kostiantyn Palchyk>
 
-  return <Box flexDirection={"column"} height={sizes.height} width={sizes.width}>
+  return <Box flexDirection={"column"} height={height} width={width}>
     <Box flexGrow={1}>
       <Box flexGrow={1} flexDirection={"column"} padding={1}>
 

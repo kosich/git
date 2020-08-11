@@ -13,6 +13,8 @@
 
 This is a npm package to beautify `git log`
 
+![demo screenshot](demo-2020-08-12.png)
+
 ## 🛸 Try it
 
 Clone this repo

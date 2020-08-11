@@ -66,7 +66,7 @@ function Main({ log, status }) {
           )
         }
       </Box>
-      <Box width="25%" minWidth={36} flexDirection="column">
+      <Box width="25%" minWidth={36} flexDirection="column" paddingTop={1} paddingBottom={1}>
         <Heatmap commits={log} />
 
         <Sidebar commit={log && log[selectedIndex]} />

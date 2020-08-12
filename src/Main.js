@@ -35,9 +35,9 @@ function Main({ log, status }) {
 
   // * 3a793ec - (HEAD -> master) initial (68 minutes ago) <Kostiantyn Palchyk>
 
-  return <Box flexDirection={"column"} height={rows || '100%'} width={columns || '100%'}>
+  return <Box flexDirection="column" height={rows || '100%'} width={columns || '100%'}>
     <Box flexGrow={1}>
-      <Box flexGrow={1} flexDirection={"column"} padding={1}>
+      <Box flexGrow={1} flexDirection="column" padding={1}>
 
         {
           status.isClean()

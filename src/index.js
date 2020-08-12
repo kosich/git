@@ -33,7 +33,7 @@ const App = ({ }) => {
         branches.push(status.tracking);
       }
 
-      git.log([ ...branches, '--stat' ]).then(d => { setLog(d.all) })
+      git.log([ ...branches, '--stat', '--max-count=100' ]).then(d => { setLog(d.all) })
 
       setStatus(status);
     })

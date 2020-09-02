@@ -7,6 +7,7 @@ const importJsx = require('import-jsx');
 const { Sidebar } = importJsx('./Sidebar');
 const { Status } = importJsx('./Status');
 const { Heatmap } = importJsx('./Heatmap/Heatmap');
+const { CommitLine } = importJsx('./CommitLine');
 
 function Main({ log, status }) {
   const [{ rows, columns }, setSizes] = useState(readStdoutSizes());
@@ -47,22 +48,7 @@ function Main({ log, status }) {
 
         {
           commits.map((entry, index) =>
-            <Box key={entry.hash} >
-              <Text dimColor={index !== selectedIndex}>
-                {'* '}
-                <Text color="red">{entry.hash.substring(0, 7)}</Text>
-                {' '}
-                {entry.refs
-                ? <Text color="yellow">{ entry.refs } </Text>
-                : null
-                }
-                <Text>{entry.message}</Text>
-                {' '}
-                <Text color="green">({DateTime.fromISO(entry.date).toRelative()})</Text>
-                {' '}
-                <Text color="blue">&lt;{entry.author_name}&gt;</Text>
-              </Text>
-            </Box>
+            <CommitLine entry={entry} isSelected={index !== selectedIndex} />
           )
         }
       </Box>
